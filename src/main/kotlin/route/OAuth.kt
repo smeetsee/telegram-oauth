@@ -62,10 +62,11 @@ fun Route.oauth() {
         }
 
         val fullKey = newAccessToken(user)
+        val idToken = newIdToken(user)
         call.respond(
             TokenResponse(
                 fullKey,
-                fullKey,
+                idToken,
                 "Bearer",
                 24.hours.inWholeSeconds
             )

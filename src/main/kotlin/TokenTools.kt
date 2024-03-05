@@ -15,6 +15,9 @@ import kotlin.time.Duration.Companion.minutes
 fun newAccessToken(telegramUser: UserResponse): String =
     newKey("access_token", telegramUser.sub, telegramUser, 24.hours)
 
+fun newIdToken(telegramUser: UserResponse): String =
+    newIdTokenKey("id_token", telegramUser.sub, telegramUser, 24.hours)
+
 fun newAuthCode(telegramUser: UserResponse): String =
     newKey("auth_code", telegramUser.sub, telegramUser, 5.minutes)
 
@@ -32,6 +35,14 @@ private fun verifier(builder: Verification.() -> Unit) = JWT
     .build()
 
 private fun newKey(type: String, id: String, telegramUser: UserResponse, expiresIn: Duration) = JWT.create()
+    .withClaim("userId", id)
+    .withClaim("type", type)
+    .withClaim("user_data", Json.encodeToString(telegramUser))
+    .withExpiresAt(Instant.ofEpochMilli(System.currentTimeMillis() + expiresIn.inWholeMilliseconds))
+    .sign(Algorithm.HMAC256(Config.JWT_SECRET))
+
+private fun newIdTokenKey(type: String, id: String, telegramUser: UserResponse, expiresIn: Duration) = JWT.create()
+    .withClaim("aud", Config.OAUTH_CLIENT_ID)
     .withClaim("userId", id)
     .withClaim("type", type)
     .withClaim("user_data", Json.encodeToString(telegramUser))
