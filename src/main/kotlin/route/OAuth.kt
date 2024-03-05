@@ -65,6 +65,7 @@ fun Route.oauth() {
         call.respond(
             TokenResponse(
                 fullKey,
+                fullKey,
                 "Bearer",
                 24.hours.inWholeSeconds
             )
