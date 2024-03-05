@@ -4,6 +4,7 @@ import dev.schlaubi.envconf.Config
 import dev.schlaubi.stdx.core.sha256
 
 object Config : Config() {
+    val BOT_USERNAME by getEnv("samplebot")
     val TELEGRAM_TOKEN by getEnv(transform = String::hashBinarySha256)
     // You can: pwgen -s 50 1
     val JWT_SECRET by getEnv("verrysecurenonsense")

@@ -30,6 +30,7 @@ docker image and can be setup the following way
     3. Create a `.env` file like this and run `docker compose up -d`
       
 ```
+BOT_USERNAME=<telegram bot username>
 TELEGRAM_TOKEN=<telegram token>
 URL=<url from step 1.3>
 JWT_SECRET=<can be generated using pwgen>
